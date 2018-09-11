@@ -201,12 +201,12 @@ def write_numpy_docstring_args(args, snip):
 	snip.rv += '\n' + snip.mkline('', indent='')
 
 
-def write_init_body(args, parents, snip):
+def write_init_body(args, parents, snip, cls_name):
 	parents = [p.strip() for p in parents.split(",")]
 	parents = [p for p in parents if p != 'object']
 
 	for p in parents:
-		snip += p + ".__init__(self)"
+		snip += "super(" + cls_name + ", self)" + ".__init__()"
 
 	if parents:
 		snip.rv += '\n' + snip.mkline('', indent='')
@@ -273,7 +273,7 @@ if args:
 	snip.rv += '\n' + snip.mkline('', indent='')
 	snip += '{0}'.format(triple_quotes(snip))
 
-write_init_body(args, t[2], snip)
+write_init_body(args, t[2], snip, t[1])
 `
 		$0
 endsnippet
@@ -301,7 +301,7 @@ if args:
 	snip.rv += '\n' + snip.mkline('', indent='')
 	snip += triple_quotes(snip)
 
-write_init_body(args, t[2], snip)
+write_init_body(args, t[2], snip, t[1])
 `
 		$0
 endsnippet
